@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="CubeCart Automation Suite" verbose="1">
+
+    <listeners>
+        <listener class-name="listeners.ExtentTestListener"/>
+    </listeners>
+
+    <test name="CubeCart Java Tests">
+        <classes>
+            <class name="tests.RegisterTest"/>
+            <class name="tests.LoginTest"/>
+            <class name="tests.AdminLoginTest"/>
+            <class name="tests.InventoryTest"/>
+            <class name="tests.AddProductTest"/>
+        </classes>
+    </test>
+
+    <test name="CubeCart Cucumber Tests">
+        <classes>
+            <class name="runner.TestRunner"/>
+        </classes>
+    </test>
+
+</suite>

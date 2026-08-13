@@ -1,0 +1,13 @@
+# Maven build output
+target/
+
+# TestNG / Cucumber / ExtentReports output (regenerated on every run)
+test-output/
+screenshots/
+
+# Eclipse workspace metadata (not part of the project itself)
+.metadata/
+
+# OS files
+Thumbs.db
+.DS_Store
