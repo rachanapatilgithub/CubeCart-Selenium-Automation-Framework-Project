@@ -18,37 +18,36 @@ import utils.ScreenshotUtils;
  * test fails. It is wired into every run through testng.xml, so no
  * test class needs to call it directly.
  *
- * ThreadLocal is used only so this listener stays safe if the suite
- * is ever switched to run test classes in parallel - each thread then
- * gets its own current ExtentTest instead of sharing one.
+ * This whole framework runs tests one at a time, not in parallel (see
+ * DriverFactory's single static driver field), so this listener just
+ * keeps track of the one test currently running in a plain field.
  */
 public class ExtentTestListener implements ITestListener {
 
-    private static final ThreadLocal<ExtentTest> currentTest = new ThreadLocal<>();
+    private ExtentTest currentTest;
     private final ExtentReports extentReports = ExtentManager.getInstance();
 
     @Override
     public void onTestStart(ITestResult result) {
-        ExtentTest test = extentReports.createTest(
+        currentTest = extentReports.createTest(
                 result.getMethod().getMethodName(),
                 result.getMethod().getDescription());
-        currentTest.set(test);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        currentTest.get().log(Status.PASS, "Test passed");
+        currentTest.log(Status.PASS, "Test passed");
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        currentTest.get().log(Status.FAIL, result.getThrowable());
+        currentTest.log(Status.FAIL, result.getThrowable());
         attachScreenshotIfAvailable(result);
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        currentTest.get().log(Status.SKIP, "Test skipped: " + result.getThrowable());
+        currentTest.log(Status.SKIP, "Test skipped: " + result.getThrowable());
     }
 
     @Override
@@ -65,7 +64,7 @@ public class ExtentTestListener implements ITestListener {
         String screenshotPath = ScreenshotUtils.takeScreenshot(driver, result.getMethod().getMethodName());
         if (screenshotPath != null) {
             try {
-                currentTest.get().addScreenCaptureFromPath(new java.io.File(screenshotPath).getAbsolutePath());
+                currentTest.addScreenCaptureFromPath(new java.io.File(screenshotPath).getAbsolutePath());
             } catch (Exception e) {
                 System.out.println("Could not attach screenshot to Extent report: " + e.getMessage());
             }
