@@ -11,7 +11,7 @@ The framework automates five modules of a live CubeCart demo store:
 4. Inventory Navigation (Admin Panel)
 5. Add Product (Admin Panel)
 
-**146 test methods** across these 5 modules, including data-driven positive/negative/boundary
+**113 test methods** across these 5 modules, including data-driven positive/negative/boundary
 cases, and **3 genuine application defects found and deliberately left failing** (negative price
 accepted, negative stock accepted, duplicate product code accepted) - see section 13.
 
